@@ -6,6 +6,8 @@ A crappy Flask app that uses a username and image to authenticate a user, inspir
 Requires python3
 Run `pip3 install -r requirements.txt` to install dependencies, then `python3 login.py` to start the server.
 
+In `login.py` set a secret key for your app to access session context.
+
 ## Usage
 Just enter a username, select an image for your password, and register your account.
 To login, enter your username, upload the same image, and you'll be logged in.
