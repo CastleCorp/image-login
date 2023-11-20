@@ -21,7 +21,11 @@ conn.commit()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if 'username' in session:
+        login_string = f"Currently logged in as {session.get('username')}"
+    else:
+        login_string = "Not currently logged in"
+    return render_template('index.html', is_logged_in=login_string)
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -30,8 +34,6 @@ def register():
 
     # Hash the image data
     image_hash = hashlib.sha256(password.encode()).hexdigest()
-
-   
 
     # Store username and hashed image data in the database
     cursor.execute('''
@@ -59,9 +61,9 @@ def login():
     # Check if the user exists and if the image hash matches
     if user and user[2] == image_hash:  # Index 2 corresponds to the password column
         session['username'] = username
-        return "Login successful!"
+        return "Login successful! <br><button><a href=\"/\">Go home</a></button>"
     else:
-        return "Login failed!"
+        return "Login failed! <br><button><a href=\"/\">Go home</a></button>"
 
 @app.route('/logout')
 def logout():
