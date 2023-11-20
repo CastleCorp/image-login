@@ -14,7 +14,7 @@ cursor.execute('''
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE,
         password TEXT,
-        fingerprint TEXT
+        hint TEXT
     )
 ''')
 conn.commit()
@@ -31,18 +31,19 @@ def index():
 def register():
     username = request.form['username']
     password = request.form['image_data']
+    hint = request.form['password_hint']
 
     # Hash the image data
     image_hash = hashlib.sha256(password.encode()).hexdigest()
 
     # Store username and hashed image data in the database
     cursor.execute('''
-        INSERT INTO users (username, password)
-        VALUES (?, ?)
-    ''', (username, image_hash))
+        INSERT INTO users (username, password, hint)
+        VALUES (?, ?, ?)
+    ''', (username, image_hash, hint))
     conn.commit()
 
-    return redirect(url_for('index'))
+    return f"User {username} successfully registered <br><button><a href=\"/\">Go home</a></button>"
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -64,6 +65,23 @@ def login():
         return "Login successful! <br><button><a href=\"/\">Go home</a></button>"
     else:
         return "Login failed! <br><button><a href=\"/\">Go home</a></button>"
+    
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    if request.method == 'GET':
+        return render_template("forgot.html", hint="")
+    elif request.method == 'POST':
+        username = request.form['username']
+
+        cursor.execute('''
+                   SELECT * FROM users WHERE username=?
+                   ''', (username,))
+        user = cursor.fetchone()
+
+        hint = "no hint available"
+        if user:
+            hint = user[3]
+        return render_template("forgot.html", hint=hint)
 
 @app.route('/logout')
 def logout():
@@ -71,4 +89,4 @@ def logout():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
