@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import hashlib
 import sqlite3
-import touchid
 
 app = Flask(__name__)
 app.secret_key = b'<Your Secret Key>'
@@ -70,4 +69,4 @@ def logout():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
