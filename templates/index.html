@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login/Register</title>
+</head>
+<body>
+    <h1>Login/Register</h1>
+    <form action="/register" method="POST">
+        <h2>Register</h2>
+        <label for="reg_username">Username:</label>
+        <input type="text" id="reg_username" name="username" required>
+        <br>
+        <label for="image_data">Your secret image:</label>
+        <input type="file" accept="image/png, image/jpeg" id="image_data" name="image_data" required>
+        <br>
+        <input type="submit" value="Register">
+    </form>
+
+    <form action="/login" method="POST">
+        <h2>Login</h2>
+        <label for="login_username">Username:</label>
+        <input type="text" id="login_username" name="username" required>
+        <br>
+        <label for="login_image_data">Your secret image:</label>
+        <input type="file" accept="image/png, image/jpeg" id="login_image_data" name="image_data" required>
+        <br>
+        <input type="submit" value="Login">
+    </form>
+
+    <form action="/logout" method="GET">
+        <input type="submit" value="Logout">
+    </form>
+</body>
+</html>
